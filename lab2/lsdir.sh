@@ -9,7 +9,7 @@ declare -a list
 list="$1"/*
 for file in $list
 do
-	check=$(gfind "$file" -maxdepth 1 -type d ) 
+	check=$(gfind "$file" -maxdepth 1 -type d )#gfind for solaris. Use find in Linux. 
 	if [[ $? -eq 0 ]] 
 	then
 	       if [[ "$file" = "$check" && -n $(gfind "$file" -maxdepth 1 -type f) ]]
