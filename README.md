@@ -1,5 +1,5 @@
 # OSP-Labs
-### Задания к лабораторным по shell: https://se.ifmo.ru/~dima/unix/ 
+### Задания к лабораторным по Shell: https://se.ifmo.ru/~dima/unix/ 
 #### Выполненные работы
 + Лабораторная 1 
   + Вариант 11
