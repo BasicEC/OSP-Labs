@@ -1,0 +1,71 @@
+#!/bin/bash
+# Вариант 11
+
+exec 2>>~/lab1_err # вывод ошибок в ~/lab1_err
+
+function writeCommList {
+local commList=("Напечатать имя текущего каталога"
+"Сменить текущий каталог"
+"Напечатать содержимое текущего каталога"
+"Создать косвенную (символьную) ссылку на файл"
+"Выполнить введенную команду"
+"Выйти из программы")
+
+for index in ${!commList[*]}
+do
+	printf "%d. %s\n" $(($index + 1)) "${commList[$index]}"
+done
+}
+
+function catchErr {
+	if [ $# -ne 1 ] # кол-во аргументов ровно 1 (код ошибки) иначе return
+	then echo "catchErr: Неверное кол-во аргументов: $#" >&2
+	return 1 
+	elif [ $1 -ne 0 ]
+	then echo "ошибка выполнения команды(подробнее в $HOME/lab1_err). код ошибки: $err"
+	fi
+}
+
+writeCommList
+
+while read comm
+do
+	case $comm in
+		1) # Напечатать имя текущего каталога
+			pwd
+			catchErr $? 
+		;;
+		2) # Сменить текущий каталог
+			echo "Введите путь к каталогу куда следует выполнить переход"
+			read dir
+			eval "cd $dir"
+			catchErr $? 
+		;;
+		3) # Напечатать содержимое текущего каталога
+			ls -l
+			catchErr $? 
+		;;
+		4) # Создать косвенную (символьную) ссылку на файл
+			echo "Введите имя файла:"
+			read fileName
+			echo "Введите имя ссылки:"
+			read link
+			eval "ln -s $fileName $link"
+			catchErr $? 
+		;;
+		5) # Выполнить введенную команду
+			echo "Введите команду:"
+			read user_comm
+			eval "$user_comm"
+			catchErr $? 
+		;;			
+		6) # Выйти из программы 
+			break
+		;;
+		*)
+			echo "Введенна неверная команда"
+		;;
+	esac
+
+	writeCommList
+done
