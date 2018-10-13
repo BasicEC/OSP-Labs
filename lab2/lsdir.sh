@@ -5,11 +5,9 @@ if [[ $# -eq 0 ]]
 then echo "err: no args" >&2
 exit 1
 fi
-declare -a list
-list="$1"/*
-for file in $list
+for file in "$1"/*
 do
-	check=$(gfind "$file" -maxdepth 1 -type d )#gfind for solaris. Use find in Linux. 
+	check=$(gfind "$file" -maxdepth 1 -type d) # use find if you don't use solaris
 	if [[ $? -eq 0 ]] 
 	then
 	       if [[ "$file" = "$check" && -n $(gfind "$file" -maxdepth 1 -type f) ]]
