@@ -8,7 +8,7 @@ fi
 dir_info=$(ls -ld "$1" | awk '{print $1":"$3}')
 perm=${dir_info%:*}
 owner=${dir_info#*:}
-uid_gid=$(getent passwd | grep "$owner" | awk -F: '{print $3":"$4}')
+uid_gid=$(getent passwd | grep "$owner" | cut -d: -f 3,4 )
 
 regex="[^:]+:[^:]+:[^:]+:${uid_gid#*:}:*"
 
