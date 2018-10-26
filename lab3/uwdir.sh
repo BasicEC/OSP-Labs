@@ -6,7 +6,7 @@ then echo "err: no args" >&2
 exit 1
 fi
 
-if [[ !( -d $1 ) ]] 
+if [[ !( -d "$1" ) ]] 
 then echo "err: $1 isn't dir" >&2
 exit 1
 fi
