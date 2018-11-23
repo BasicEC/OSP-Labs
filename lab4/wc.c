@@ -72,7 +72,7 @@ int main( int argc, char *argv[] ) {
         opt = getopt(argc, argv, opts);
     }
 
-    if (argc == 1) {
+    if (argc <= list_size) {
         head = word_count("-");
         tail = head;
 

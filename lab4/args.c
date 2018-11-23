@@ -33,9 +33,12 @@ args_list_t* add_arg(args_list_t* list, int index) {
 args_list_t* new_args_from_argv(int argc, char** argv) {
     int i = 1;
     args_list_t* list = NULL;
+    list_size = 1;
     do {
-        if (argv[i][0] == '-' && argv[i][0] != 0) list = add_arg(list, i);
-        else break;
+        if (argv[i][0] == '-' && argv[i][0] != 0){
+            list = add_arg(list, i);
+            ++list_size;
+        } else break;
     } while (i+1 < argc && strcmp(argv[i++], "--"));
 
     return list;
