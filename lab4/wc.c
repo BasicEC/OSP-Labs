@@ -19,7 +19,7 @@ flist_t* word_count(char* fname) {
     short count = 0;
     short i;
 
-    if (fname[0] == '-') {
+    if (fname[0] == '-' && fname[1] == 0) {
         file = stdin;
     } else {
         file = fopen(fname, "r");
