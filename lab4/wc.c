@@ -24,8 +24,8 @@ flist_t* word_count(char* fname) {
     } else {
         file = fopen(fname, "r");
         if (!file) {
-            printf("cannot open file \"%s\", errno: %d\n", fname, errno);
-            exit(1);
+            printf("wc: cannot open file \"%s\", errno: %d\n", fname, errno);
+            return NULL;
         } 
     }
 
@@ -72,7 +72,6 @@ int main( int argc, char *argv[] ) {
         opt = getopt(argc, argv, opts);
     }
 
-    print_args_list(args);
     if (argc == 1) {
         head = word_count("-");
         tail = head;
@@ -87,7 +86,7 @@ int main( int argc, char *argv[] ) {
                 tail = head;
             } else {
                 tail->next = word_count(argv[i]);
-
+                if (tail->next == NULL) continue;
                 total->c += tail->c;
                 total->w += tail->w;
                 total->l += tail->l;
