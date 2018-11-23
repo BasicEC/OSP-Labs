@@ -1,6 +1,6 @@
 CC=gcc
 TARGET=wc
-CFLAGS=-Wall -std=c99
+CFLAGS=-Wall -std=gnu99 -pedantic -Werror -Wextra
 SRC=$(wildcard *.c)
 OBJ=$(SRC:%.c=%.o)
 

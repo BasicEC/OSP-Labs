@@ -4,18 +4,18 @@
 #include <errno.h>
 #include <getopt.h>
 #include <ctype.h>
-#include "list.h"
+#include "flist.h"
 #include <string.h>
+#include "args.h"
 
 unsigned long c_count = 0;
 unsigned long w_count = 0;
 unsigned long l_count = 0;
 char buff[256] = {0};
 
-list_t* word_count(char* fname) {
-
+flist_t* word_count(char* fname) {
     FILE* file;
-    list_t* file_wc;
+    flist_t* file_wc;
     short count = 0;
     short i;
 
@@ -29,12 +29,7 @@ list_t* word_count(char* fname) {
         } 
     }
 
-    file_wc = (list_t*)malloc(sizeof(list_t));
-    file_wc->next = NULL;
-    file_wc->fname = fname;
-    file_wc->c = 0;
-    file_wc->w = 0;
-    file_wc->l = 0;
+    file_wc = new_flist(fname);
 
     count = 256;
 
@@ -55,12 +50,13 @@ list_t* word_count(char* fname) {
    return file_wc;
 }
 int main( int argc, char *argv[] ) {
-    list_t* head = NULL;
-    list_t* tail = NULL;
-    list_t* total = malloc(sizeof(list_t));
+    flist_t* head = NULL;
+    flist_t* tail = NULL;
+    flist_t* total = NULL;
+    args_list_t* args = new_args_from_argv(argc, argv);
     short flags = 0;
-    int opt = getopt(argc, argv, "lwc");
-
+    char* opts = "lwc";
+    int opt = getopt(argc, argv, opts);    
     while (opt != -1) {
         switch (opt) {
             case 'l':
@@ -73,20 +69,19 @@ int main( int argc, char *argv[] ) {
                 flags = flags | 4;
                 break;
         }
-        opt = getopt( argc, argv, "lwc" );
+        opt = getopt(argc, argv, opts);
     }
 
+    print_args_list(args);
     if (argc == 1) {
-        word_count("-");
-    } else {
-        total->next = NULL;
-        total->c = 0;
-        total->w = 0;
-        total->l = 0;
-        total->fname = "total";
+        head = word_count("-");
+        tail = head;
 
+    } else {
+        total = new_flist("total");
         for (int i = 1; i < argc; ++i ) {
-            if (argv[i][0] == '-' && argv[i][1] != 0) continue;
+            if (check_args_list(args, i)) continue;
+            printf("%s %d\n", argv[i], i);
             if (!head) {
                 head = word_count(argv[i]);
                 tail = head;
@@ -104,7 +99,7 @@ int main( int argc, char *argv[] ) {
         total->w += tail->w;
         total->l += tail->l;
     }
-
+    
     if (tail != head) tail->next = total;
     print_list(head, flags);
         
