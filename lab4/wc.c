@@ -80,7 +80,6 @@ int main( int argc, char *argv[] ) {
         total = new_flist("total");
         for (int i = 1; i < argc; ++i ) {
             if (check_args_list(args, i)) continue;
-            printf("%s %d\n", argv[i], i);
             if (!head) {
                 head = word_count(argv[i]);
                 tail = head;
